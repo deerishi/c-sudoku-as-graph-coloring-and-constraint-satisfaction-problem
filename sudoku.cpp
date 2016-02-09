@@ -7,7 +7,7 @@ int units[9][2]={{0,0},{3,0},{6,0},{0,3},{0,6},{3,3},{3,6},{6,3},{6,6}};
 unordered_map<int,int> unitsPositions,unitsPositions2; // starting position and its unit number
 
 
-set<int> squaresInunits[9];
+unordered_set<int> squaresInunits[9];
 void fillUnits()
 {
     int i,j,k,m,x,y,num;
@@ -57,8 +57,8 @@ class Square
 {
     public:
         int squareVal;
-        set<int> peers;
-        set<int> possibleDigits;
+        unordered_set<int> peers;
+        unordered_set<int> possibleDigits;
         
         //Square(int val) :  squareVal(val){}
         void setPossibleValuesForSquare(int x)
@@ -88,7 +88,7 @@ class Square
             //cout<<"startingUnitNum is "<<startingUnitNum<<"\n";
             int unitNum=unitsPositions2[startingUnitNum];
             //cout<<"unitNum is "<<unitNum<<"\n";
-            set<int>::iterator it;
+            unordered_set<int>::iterator it;
             for(it=squaresInunits[unitNum].begin();it!=squaresInunits[unitNum].end();it++)
             {
                 this->peers.insert(*it);
@@ -100,7 +100,7 @@ class Square
         
         void printPeerSet()
         {
-            set<int>::iterator it;
+            unordered_set<int>::iterator it;
             int size=this->peers.size();
             cout<<"the size of the peer set is "<<size<<"\n";
             for(it=this->peers.begin();it!=this->peers.end();it++)
@@ -114,7 +114,7 @@ class Square
 
 Square Board[81],a;
 
-unordered_map<int,set<int> >grid; //Since its easier to copy the unordered map we'll use that 
+unordered_map<int,unordered_set<int> >grid; //Since its easier to copy the unordered map we'll use that 
 void createBoardDictionary()
 {
     int i,j;
@@ -137,10 +137,10 @@ void createBoardDictionary()
 
 
 
-bool constraintStatisfaction2(unordered_map<int,set<int> >&grid,int assigned) //Pass the grid(unordered<map>) by reference since we need to make changes to it
+bool constraintStatisfaction2(unordered_map<int,unordered_set<int> >&grid,int assigned) //Pass the grid(unordered<map>) by reference since we need to make changes to it
 {
     int i,j,squareVal;
-    set<int>::iterator it,it2;
+    unordered_set<int>::iterator it,it2;
     i=assigned;
         //The set of Peers are Board[i].peers
         //Note , Only remove constraints if that paticular node is assigned a value
@@ -187,10 +187,10 @@ void putSpaces(int num)
     }
 }
 
-void printBoard2(unordered_map<int,set<int> > grid)
+void printBoard2(unordered_map<int,unordered_set<int> > grid)
 {
     int i,j,m,numElementsInSet;
-    set<int>::iterator it;
+    unordered_set<int>::iterator it;
     for(i=0;i<9;i++)
     {
         for(j=0;j<9;j++)
@@ -207,10 +207,10 @@ void printBoard2(unordered_map<int,set<int> > grid)
         cout<<"\n";
     }
 }
-void printMap(unordered_map<int,set<int> >grid)
+void printMap(unordered_map<int,unordered_set<int> >grid)
 {
     int i,j;
-    set<int>::iterator it;
+    unordered_set<int>::iterator it;
     for(i=0;i<81;i++)
     {
         cout<<"For element number "<<i<<" its possible values are \n";
@@ -222,7 +222,7 @@ void printMap(unordered_map<int,set<int> >grid)
     }
 }
 
-bool finishedBoard(unordered_map<int,set<int> >grid)
+bool finishedBoard(unordered_map<int,unordered_set<int> >grid)
 {
     int i,j;
     for(i=0;i<81;i++)
@@ -235,7 +235,7 @@ bool finishedBoard(unordered_map<int,set<int> >grid)
     return true;
 }
 
-int mostConstrainedVariable(unordered_map<int,set<int> >grid,set<int> remaining)
+int mostConstrainedVariable(unordered_map<int,unordered_set<int> >grid,unordered_set<int> remaining)
 {
     int i,j,mini=INT_MAX,size,mcv;
     if(finishedBoard(grid))
@@ -244,7 +244,7 @@ int mostConstrainedVariable(unordered_map<int,set<int> >grid,set<int> remaining)
         printBoard2(grid);
         exit(0);
     }
-    set<int>::iterator it;
+    unordered_set<int>::iterator it;
     for(it=remaining.begin();it!=remaining.end();it++)
     {
         
@@ -261,7 +261,7 @@ int mostConstrainedVariable(unordered_map<int,set<int> >grid,set<int> remaining)
 
 
 //int leastConstrainingValue
-void search(unordered_map<int,set<int> >grid,int assignSquare,set<int> remaining)
+void search(unordered_map<int,unordered_set<int> >grid,int assignSquare,unordered_set<int> remaining)
 {
     //So Now we have a varaible to begin with and a mcv square to which we need to assign a values
     //For starters lets just assign turn by turn without using the lcv
@@ -271,7 +271,7 @@ void search(unordered_map<int,set<int> >grid,int assignSquare,set<int> remaining
         printBoard2(grid);
         exit(0);
     }
-    set<int>::iterator it,it2;
+    unordered_set<int>::iterator it,it2;
     bool status;
    
     int mcv;
@@ -280,7 +280,7 @@ void search(unordered_map<int,set<int> >grid,int assignSquare,set<int> remaining
     for(it=grid[assignSquare].begin();it!=grid[assignSquare].end();it++)// since the grid contains all the possible numbers that can fit into the square
     {
         //So basically we want to try all the possible values and then propogate the constraints
-        unordered_map<int,set<int> > nextGrid=grid;
+        unordered_map<int,unordered_set<int> > nextGrid=grid;
         nextGrid[assignSquare].clear(); //clear all the possible values
         nextGrid[assignSquare].insert(*it);//Insert the first possible value 
         //Now we nned to check for constaint Propogation, which eliminates all the possible values among its peers.
@@ -321,7 +321,7 @@ int main()
     unitsPositions2[60]=8;
     fillUnits();
     //pboard();
-    set<int>::iterator it;
+    unordered_set<int>::iterator it;
     /*cout<<"\n the peers in the each unit are\n";
     for(i=0;i<9;i++)
     {
@@ -364,7 +364,7 @@ int main()
     //cout<<"\n\n Now we'll print our first Board\n\n";
     //printMap(grid);
     //printBoard2(grid);
-    set<int> remaining;
+    unordered_set<int> remaining;
     for(i=0;i<81;i++)
     {
         remaining.insert(i);   
