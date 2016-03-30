@@ -1,6 +1,6 @@
 {
   "name": "Sudoku as graph coloring and constraint satisfaction problem (C++)",
   "tagline": "#Sudoku #GraphColoring",
-  "body": "This code solves the 9x9 Sudoku puzzle by treating it as a Graph Coloring and a Constraint Satisfaction Problem.\r\n\r\nFirst a constraint graph of the board is drawn and each square can be colored in 10 ways (0-9) with the squares connected by an edge getting different colors.\r\n\r\n",
+  "body": "This code solves the 9x9 Sudoku puzzle by treating it as a Graph Coloring and a Constraint Satisfaction Problem.\r\n\r\nFirst a constraint graph of the board is drawn and each square can be colored in 10 ways (0-9) with the squares connected by an edge getting different colors.\r\n\r\n![Sudoku](https://github.com/deerishi/sudoku-as-graph-coloring-and-constraint-satisfaction-problem/blob/master/sudoku.PNG?raw=true)\r\n\r\n(Image from Google Search Results)\r\n",
   "note": "Don't delete this file! It's used internally to help with page regeneration."
 }
